@@ -34,22 +34,37 @@ nav.querySelectorAll('a').forEach(link => {
   });
 });
 
-// Contact form: simple submit feedback
+// Contact form: submit to Formspree via fetch
 const form = document.querySelector('.contact-form');
 form.addEventListener('submit', e => {
   e.preventDefault();
   const btn = form.querySelector('button[type=submit]');
-  btn.textContent = 'Message Sent!';
-  btn.style.background = '#4a7c59';
-  btn.style.borderColor = '#4a7c59';
+  btn.textContent = 'Sending…';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = 'Send Message';
-    btn.style.background = '';
-    btn.style.borderColor = '';
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(res => {
+    if (res.ok) {
+      btn.textContent = 'Message Sent!';
+      btn.style.background = '#4a7c59';
+      btn.style.borderColor = '#4a7c59';
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.disabled = false;
+        form.reset();
+      }, 3000);
+    } else {
+      btn.textContent = 'Error — please try again';
+      btn.disabled = false;
+    }
+  }).catch(() => {
+    btn.textContent = 'Error — please try again';
     btn.disabled = false;
-    form.reset();
-  }, 3000);
+  });
 });
 
 // Subtle scroll-in animation for cards
