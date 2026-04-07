@@ -8,29 +8,13 @@ window.addEventListener('scroll', () => {
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
 toggle.addEventListener('click', () => {
-  const open = nav.style.display === 'flex';
-  nav.style.display = open ? '' : 'flex';
-  if (!open) {
-    Object.assign(nav.style, {
-      flexDirection: 'column',
-      position: 'fixed',
-      top: 'var(--header-h)',
-      left: '0',
-      right: '0',
-      background: 'rgba(250,250,248,0.98)',
-      padding: '1.5rem',
-      borderBottom: '1px solid #e8e8e4',
-      backdropFilter: 'blur(12px)',
-      zIndex: '99',
-      gap: '1.25rem',
-    });
-  }
+  nav.classList.toggle('open');
 });
 
 // Close mobile nav on link click
 nav.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
-    nav.style.display = '';
+    nav.classList.remove('open');
   });
 });
 
@@ -39,7 +23,7 @@ const form = document.querySelector('.contact-form');
 form.addEventListener('submit', e => {
   e.preventDefault();
   const btn = form.querySelector('button[type=submit]');
-  btn.textContent = 'Sending…';
+  btn.textContent = 'Sending\u2026';
   btn.disabled = true;
   fetch(form.action, {
     method: 'POST',
@@ -58,29 +42,27 @@ form.addEventListener('submit', e => {
         form.reset();
       }, 3000);
     } else {
-      btn.textContent = 'Error — please try again';
+      btn.textContent = 'Error \u2014 please try again';
       btn.disabled = false;
     }
   }).catch(() => {
-    btn.textContent = 'Error — please try again';
+    btn.textContent = 'Error \u2014 please try again';
     btn.disabled = false;
   });
 });
 
-// Subtle scroll-in animation for cards
-const observer = new IntersectionObserver((entries) => {
+// Staggered scroll-reveal animations
+const reveal = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-      observer.unobserve(entry.target);
+      entry.target.classList.add('revealed');
+      reveal.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.project-card, .post-card, .testimonial').forEach((el, i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`;
-  observer.observe(el);
+document.querySelectorAll('.thumb-item, .skill-tag, .about-layout, .contact-form, .showreel-thumb').forEach((el, i) => {
+  el.classList.add('reveal-on-scroll');
+  el.style.animationDelay = `${(i % 10) * 0.06}s`;
+  reveal.observe(el);
 });
