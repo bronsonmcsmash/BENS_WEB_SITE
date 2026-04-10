@@ -832,6 +832,208 @@ ul { list-style: none; }
 }
 
 /* ==========================================
+   CREDITS TIMELINE
+   ========================================== */
+
+.credits-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.credits-filter {
+  padding: 0.45rem 1.25rem;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 2rem;
+  background: transparent;
+  color: rgba(240,236,228,0.6);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.credits-filter:hover {
+  border-color: rgba(200,169,110,0.5);
+  color: #f0ece4;
+}
+
+.credits-filter.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.credits-timeline {
+  position: relative;
+  padding: 1rem 0 2rem;
+}
+
+.credits-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-accent) 4%,
+    var(--color-accent) 96%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.credits-year-marker {
+  position: relative;
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  max-height: 5rem;
+  overflow: hidden;
+}
+
+.credits-year-marker.filtered-out {
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.credits-timecode {
+  display: inline-block;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: var(--color-dark);
+  padding: 0.3rem 1rem;
+  border: 1px solid rgba(200,169,110,0.25);
+  border-radius: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.credits-card {
+  position: relative;
+  width: 44%;
+  padding: 1.2rem 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-lg);
+  margin-bottom: 0.75rem;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease,
+              padding 0.3s ease, margin 0.3s ease, border-color 0.3s ease;
+  max-height: 10rem;
+  overflow: hidden;
+}
+
+.credits-card:hover {
+  border-color: rgba(200,169,110,0.2);
+  background: rgba(255,255,255,0.05);
+}
+
+.credits-card--left {
+  margin-right: auto;
+  margin-left: 0;
+  text-align: right;
+}
+
+.credits-card--right {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: left;
+}
+
+/* Connector dot to timeline */
+.credits-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 0.6;
+}
+
+.credits-card--left::before {
+  right: -4.2%;
+}
+
+.credits-card--right::before {
+  left: -4.2%;
+}
+
+/* Connector line from card to dot */
+.credits-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  background: rgba(200,169,110,0.15);
+  transform: translateY(-50%);
+}
+
+.credits-card--left::after {
+  right: -3.5%;
+  width: 3.5%;
+}
+
+.credits-card--right::after {
+  left: -3.5%;
+  width: 3.5%;
+}
+
+.credits-card.filtered-out {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-color: transparent;
+  pointer-events: none;
+}
+
+.credits-card__network {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(240,236,228,0.4);
+  margin-bottom: 0.2rem;
+}
+
+.credits-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f0ece4;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+}
+
+.credits-card__role {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ==========================================
    RESPONSIVE
    ========================================== */
 
@@ -846,6 +1048,8 @@ ul { list-style: none; }
   .about-badge { right: 0; }
   .contact-layout { grid-template-columns: 1fr; }
   .thumb-grid { grid-template-columns: repeat(3, 1fr); }
+  .credits-card--left,
+  .credits-card--right { width: 43%; }
 }
 
 @media (max-width: 640px) {
@@ -870,4 +1074,30 @@ ul { list-style: none; }
   .hero-actions { flex-direction: column; }
   .footer-inner { flex-direction: column; text-align: center; }
   .contact-form { padding: var(--space-lg); }
+  .credits-timeline::before { left: 16px; }
+  .credits-card--left,
+  .credits-card--right {
+    width: calc(100% - 44px);
+    margin-left: 44px;
+    margin-right: 0;
+    text-align: left;
+  }
+  .credits-card--left::before,
+  .credits-card--right::before {
+    left: -18px;
+    right: auto;
+  }
+  .credits-card--left::after,
+  .credits-card--right::after {
+    left: -14px;
+    right: auto;
+    width: 14px;
+  }
+  .credits-year-marker {
+    text-align: left;
+    padding-left: 44px;
+  }
+  .credits-timecode {
+    font-size: 0.65rem;
+  }
 }

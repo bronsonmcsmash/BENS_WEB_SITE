@@ -70,8 +70,44 @@ const reveal = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.thumb-item, .skill-tag, .about-layout, .contact-form, .showreel-thumb').forEach((el, i) => {
+document.querySelectorAll('.thumb-item, .skill-tag, .about-layout, .contact-form, .showreel-thumb, .credits-card, .credits-year-marker, .credits-filters').forEach((el, i) => {
   el.classList.add('reveal-on-scroll');
   el.style.animationDelay = `${(i % 10) * 0.06}s`;
   reveal.observe(el);
+});
+
+// Credits filter
+const filterBtns = document.querySelectorAll('.credits-filter');
+const creditCards = document.querySelectorAll('.credits-card');
+const yearMarkers = document.querySelectorAll('.credits-year-marker');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+
+    creditCards.forEach(card => {
+      if (filter === 'all' || card.dataset.role === filter) {
+        card.classList.remove('filtered-out');
+      } else {
+        card.classList.add('filtered-out');
+      }
+    });
+
+    // Hide year markers with no visible cards after them
+    yearMarkers.forEach(marker => {
+      let next = marker.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('credits-year-marker')) {
+        if (next.classList.contains('credits-card') && !next.classList.contains('filtered-out')) {
+          hasVisible = true;
+          break;
+        }
+        next = next.nextElementSibling;
+      }
+      marker.classList.toggle('filtered-out', !hasVisible);
+    });
+  });
 });
