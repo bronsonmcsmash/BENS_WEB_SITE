@@ -657,15 +657,6 @@ ul { list-style: none; }
   color: var(--color-text-muted);
 }
 
-.reference-item a {
-  font-size: 0.82rem;
-  color: var(--color-accent);
-  transition: opacity 0.2s;
-}
-
-.reference-item a:hover {
-  opacity: 0.75;
-}
 
 
 /* ==========================================
