@@ -1008,7 +1008,7 @@ ul { list-style: none; }
 }
 
 @media (max-width: 640px) {
-  .container { padding: 0 2rem; }
+  .container { padding: 0 2.5rem; }
   .site-nav {
     display: none;
     flex-direction: column;
