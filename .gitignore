@@ -7,3 +7,21 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Credentials & generated files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+client_secret*.json
+token.json
+secrets.json
+service-account*.json
+.gcp-credentials.json
+node_modules/
+.venv/
+venv/
+.docker/
